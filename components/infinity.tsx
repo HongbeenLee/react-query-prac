@@ -5,11 +5,19 @@ import { repoList } from "../apis";
 import { TableTh } from "./tableTh";
 import { TableTr } from "./tableTr";
 
+type Repo = {
+  id: string;
+  name: string;
+  description: string;
+  language: string;
+  forks_count: string;
+  url: string;
+  homepage: string;
+};
+
 export const Infinity = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { ref, inView } = useInView();
-  const pageParamRef = useRef(1);
-  const hasNextRef = useRef(true);
 
   const {
     status,
@@ -25,35 +33,29 @@ export const Infinity = () => {
     async ({ pageParam = 1 }) => {
       console.log(pageParam);
       const res = await repoList(pageParam);
-      // console.log(res);
       const { link } = res.headers;
-
-      // link에서 last가 없으면 마지막 페이지 -> 정규식으로 last찾기
-      hasNextRef.current = link.match(/last/g) ? true : false;
-      pageParamRef.current = pageParamRef.current + 1;
 
       return {
         results: res.data,
         nextPage: pageParam + 1,
-        hasNext: link.match(/last/g) ? true : false,
+        hasNext: link.match(/last/g) ? true : false, // link에서 last가 없으면 마지막 페이지 -> 정규식으로 last찾기
       };
     },
     {
-      getNextPageParam: (pageParam, pages) => {
+      getNextPageParam: (pageParam) => {
         return pageParam.hasNext ? pageParam.nextPage : undefined;
       },
     }
   );
-  console.log(data);
+
   useEffect(() => {
     if (inView) {
-      // 얘는 무슨 일을 하는것인가...
       fetchNextPage();
     }
   }, [inView, fetchNextPage]);
 
   return (
-    <div>
+    <>
       <h1
         style={{
           width: "100%",
@@ -63,80 +65,94 @@ export const Infinity = () => {
       >
         Repositories By Meta ♾
       </h1>
-      <table
+      <div
         style={{
-          width: "100%",
-          padding: "20px",
-          position: "relative",
-          tableLayout: "fixed",
-          wordBreak: "break-all",
-          height: "auto",
+          width: "98%",
+          height: "800px",
+          overflow: "scroll",
+          margin: "auto",
         }}
       >
-        <colgroup>
-          <col width="4%" />
-          <col width="10%" />
-          <col width="20%" />
-          <col width="8%" />
-          <col width="6%" />
-          <col width="10%" />
-        </colgroup>
-        <thead style={{ position: "sticky", top: "0px", height: "50px" }}>
-          <tr>
-            <TableTh name="No."></TableTh>
-            <TableTh name="Repo Name 👾"></TableTh>
-            <TableTh name="Description ✏️"></TableTh>
-            <TableTh name="Language 💬"></TableTh>
-            <TableTh name="Forks 🍴"></TableTh>
-            <TableTh name="Homepage 🏠"></TableTh>
-          </tr>
-        </thead>
-        <tbody>
-          {status === "loading" ? (
-            <tr style={{ width: "100%" }}>
-              <td>Loading...🎃</td>
-            </tr>
-          ) : status === "error" ? (
-            <tr style={{ width: "100%" }}>
-              <td>{`Error: ${error.message} ⚠️`}</td>
-            </tr>
-          ) : (
-            <>
-              {data.pages.map((page, perTwenty) =>
-                page.results.map((repo, index) => {
-                  const number = perTwenty * 20 + index + 1;
-                  return (
-                    <TableTr key={number} number={number} repo={repo}></TableTr>
-                  );
-                })
-              )}
-            </>
-          )}
-        </tbody>
-      </table>
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <div ref={ref} style={{ fontSize: "20px" }}>
-          {isFetchingNextPage
-            ? "Loading more..."
-            : hasNextPage || "Nothing more to load"}
-        </div>
-      </div>
-      {isFetching && isFetchingNextPage && (
-        <div
+        <table
           style={{
-            position: "fixed",
-            top: "30%",
-            left: "40%",
-            border: "1px solid gray",
-            borderRadius: "5px",
-            padding: "2rem 1rem",
-            backgroundColor: "gray",
+            width: "100%",
+            paddingRight: "10px",
+            position: "relative",
+            tableLayout: "fixed",
+            wordBreak: "break-all",
           }}
         >
-          Background Updating...
+          <colgroup>
+            <col width="4%" />
+            <col width="10%" />
+            <col width="20%" />
+            <col width="8%" />
+            <col width="6%" />
+            <col width="10%" />
+          </colgroup>
+          <thead style={{ position: "sticky", top: "0px", height: "50px" }}>
+            <tr>
+              <TableTh name="No."></TableTh>
+              <TableTh name="Repo Name 👾"></TableTh>
+              <TableTh name="Description ✏️"></TableTh>
+              <TableTh name="Language 💬"></TableTh>
+              <TableTh name="Forks 🍴"></TableTh>
+              <TableTh name="Homepage 🏠"></TableTh>
+            </tr>
+          </thead>
+          <tbody>
+            {status === "loading" ? (
+              <tr style={{ width: "100%" }}>
+                <td>Loading...🎃</td>
+              </tr>
+            ) : status === "error" ? (
+              <tr style={{ width: "100%" }}>
+                <td>{`Error: ${error.message} ⚠️`}</td>
+              </tr>
+            ) : (
+              <>
+                {data.pages.map((page, perTwenty) =>
+                  page.results.map((repo: Repo, index) => {
+                    const number = perTwenty * 20 + index + 1;
+                    return (
+                      <TableTr
+                        key={number}
+                        number={number}
+                        repo={repo}
+                      ></TableTr>
+                    );
+                  })
+                )}
+              </>
+            )}
+          </tbody>
+        </table>
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <div ref={ref} style={{ fontSize: "20px" }}>
+            {isFetchingNextPage
+              ? "Loading more..."
+              : hasNextPage || "Nothing more to load"}
+          </div>
         </div>
-      )}
-      <hr />
-    </div>
+        {isFetching && isFetchingNextPage && (
+          <div
+            style={{
+              position: "fixed",
+              top: "30%",
+              left: "40%",
+              border: "1px solid gray",
+              borderRadius: "5px",
+              padding: "2rem 1rem",
+              backgroundColor: "gray",
+            }}
+          >
+            Background Updating...
+          </div>
+        )}
+        <hr />
+      </div>
+    </>
   );
 };
