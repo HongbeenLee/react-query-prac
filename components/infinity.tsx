@@ -54,11 +54,19 @@ export const Infinity = () => {
 
   return (
     <div>
-      <h1>Repositories By Meta ♾</h1>
+      <h1
+        style={{
+          width: "100%",
+          textAlign: "center",
+          color: "navy",
+        }}
+      >
+        Repositories By Meta ♾
+      </h1>
       <table
         style={{
           width: "100%",
-          padding: "30px",
+          padding: "20px",
           position: "relative",
           tableLayout: "fixed",
           wordBreak: "break-all",
@@ -76,9 +84,9 @@ export const Infinity = () => {
         <thead style={{ position: "sticky", top: "0px", height: "50px" }}>
           <tr>
             <TableTh name="No."></TableTh>
-            <TableTh name="Name"></TableTh>
+            <TableTh name="Repo Name 👾"></TableTh>
             <TableTh name="Description ✏️"></TableTh>
-            <TableTh name="Language"></TableTh>
+            <TableTh name="Language 💬"></TableTh>
             <TableTh name="Forks 🍴"></TableTh>
             <TableTh name="Homepage 🏠"></TableTh>
           </tr>
