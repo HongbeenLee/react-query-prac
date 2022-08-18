@@ -7,7 +7,12 @@ export const repoData = () =>
 
 export const repoList = async (pageParam: number) => {
   const res = await axios.get(
-    `https://api.github.com/users/tannerlinsley/repos?page=${pageParam}&per_page=30`
+    `https://api.github.com/users/facebook/repos?page=${pageParam}&per_page=20`,
+    {
+      headers: {
+        Authorization: "token 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",
+      },
+    }
   );
 
   return res;
