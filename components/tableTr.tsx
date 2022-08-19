@@ -1,7 +1,7 @@
 import { TableTd } from "./tableTd";
 
 type Props = {
-  number: string;
+  number: number;
   repo: {
     id: string;
     name: string;
@@ -25,7 +25,7 @@ export const TableTr = (props: Props) => {
         backgroundColor: "antiquewhite",
       }}
     >
-      <TableTd name={number}></TableTd>
+      <TableTd name={`${number}`}></TableTd>
       <TableTd>
         <a href={repo.url}>{repo.name}</a>
       </TableTd>
