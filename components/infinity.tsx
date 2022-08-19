@@ -107,12 +107,12 @@ export const Infinity = () => {
               </tr>
             ) : status === "error" ? (
               <tr style={{ width: "100%" }}>
-                <td>{`Error: ${error.message} ⚠️`}</td>
+                <td>{`Error ⚠️`}</td>
               </tr>
             ) : (
               <>
                 {data.pages.map((page, perTwenty) =>
-                  page.results.map((repo: Repo, index) => {
+                  page.results.map((repo: Repo, index: number) => {
                     const number = perTwenty * 20 + index + 1;
                     return (
                       <TableTr
