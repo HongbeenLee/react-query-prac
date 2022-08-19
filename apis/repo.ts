@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+
 export const repoData = () =>
   axios
     .get("https://api.github.com/repos/tannerlinsley/react-query")
@@ -10,7 +12,7 @@ export const repoList = async (pageParam: number) => {
     `https://api.github.com/users/facebook/repos?page=${pageParam}&per_page=20`,
     {
       headers: {
-        Authorization: "token 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",
+        Authorization: `token ${GITHUB_TOKEN}`,
       },
     }
   );
