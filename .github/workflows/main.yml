@@ -19,7 +19,7 @@ jobs:
         run: |
           docker build -f Dockerfile -t cool-docker .
           docker run -d -p 3000:3000 cool-docker
-          docker login --username hongbeenlee
+          docker login -u $NAME -p $ACCESS_TOKEN
           docker tag cool-docker:latest hongbeenlee/react_query_prac:latest
           docker push hongbeenlee/react_query_prac:latest
           # etc
