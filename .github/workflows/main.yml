@@ -19,7 +19,7 @@ jobs:
         run: |
           docker build -f Dockerfile -t cool-docker .
           docker run -d -p 3000:3000 cool-docker
-          echo "The Docker Name is: ${{secrets.NAME}}"
+          echo "The Docker Name is: ${{secrets.NAME}}, $NAME, ${{secrets.PW}}"
           docker login -u ${{secrets.NAME}} -p ${{secrets.ACCESS_TOKEN}}
           docker tag cool-docker:latest hongbeenlee/react_query_prac:latest
           docker push hongbeenlee/react_query_prac:latest
