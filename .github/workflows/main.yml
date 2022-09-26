@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NAME: ${{secrets.NAME}}
-      ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+      ACCESS_TOKEN: ${{secrets.ACCESS}}
     steps:
       - uses: actions/checkout@v2
       - name: Merge upstream
