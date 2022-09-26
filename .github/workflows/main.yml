@@ -13,14 +13,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NAME: ${{secrets.NAME}}
+      ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
     steps:
       - uses: actions/checkout@v2
       - name: Merge upstream
         run: |
           docker build -f Dockerfile -t cool-docker .
           docker run -d -p 3000:3000 cool-docker
-          echo "The Docker Name is: ${{secrets.NAME}}, $NAME, ${{secrets}}"
-          docker login -u ${{secrets.NAME}} -p ${{secrets.ACCESS_TOKEN}}
+          echo "The Docker Name is: $NAME $ACCESS_TOKEN"
+          docker login -u $NAME -p $ACCESS_TOKEN
           docker tag cool-docker:latest hongbeenlee/react_query_prac:latest
           docker push hongbeenlee/react_query_prac:latest
           # etc
