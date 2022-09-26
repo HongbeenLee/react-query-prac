@@ -2,11 +2,11 @@ name: Build docker image when pushed releases, main branch
 on:
   push:
     # Sequence of patterns matched against refs/heads
-    branches:    
+    branches:
       - main
-      - 'release/**'
+      - "release/**"
     # Sequence of patterns matched against refs/tags
-    tags:        
+    tags:
       - v2
       - v1.*
 
@@ -17,9 +17,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Merge upstream
         run: |
-          docker build -f Dockerfile -t cool-docker .
-          docker run -d -p 3000:3000 cool-docker
+          docker build -f Dockerfile -t hongbeenlee/react_query_prac .
+          docker run -d -p 3000:3000 hongbeenlee/react_query_prac
           docker login
-          docker tag cool-docker:latest hongbeenlee/react_query_prac:latest
+          docker tag hongbeenlee/react_query_prac:latest hongbeenlee/react_query_prac:latest
           docker push hongbeenlee/react_query_prac:latest
           # etc
