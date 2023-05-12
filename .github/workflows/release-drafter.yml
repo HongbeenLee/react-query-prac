@@ -39,4 +39,3 @@ jobs:
         #   disable-autolabeler: true
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-s
