@@ -1,0 +1,20 @@
+name: Bump Version
+
+on: workflow_dispatch
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: git config --global user.email "redbean@hutom.co.kr"
+      - run: git config --global user.name "HongbeenLee"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - run: npm version minor
+      - run: git push origin develop --tags
+      - uses: actions/upload-artifact@v2
+        with:
+          name: src
+          path: ./
